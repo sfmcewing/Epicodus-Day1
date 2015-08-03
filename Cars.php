@@ -60,6 +60,17 @@ $daewoo = new Car("Lanos", 123456, "images/daewoo lanos.jpeg");
 
 $cars = array($batmobile, $pinto, $flugtag, $daewoo);
 
+//Filter cars by mileage and price
+$cars_matching_search = array();
+foreach ($cars as $car) {
+  $carPrice = $car->getPrice();
+  $carMiles = $car->getMiles();
+
+  if ($carMiles < $_GET["miles"] && $carPrice < $_GET["price"]) {
+    array_push($cars_matching_search, $car);
+  }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -71,19 +82,25 @@ $cars = array($batmobile, $pinto, $flugtag, $daewoo);
    <h1>Your Car Dealership</h1>
    <ul>
         <?php
-           foreach ($cars as $car) {
+           foreach ($cars_matching_search as $car) {
            	$carModel = $car->getModel();
            	$carPrice = $car->getPrice();
            	$carMiles = $car->getMiles();
            	$carImage = $car->getImage();
 
-           	echo "<li> $carModel </li>";
-           	echo "<ul>";
-           	    echo "<li> $$carPrice </li>";
-           	    echo "<li> $carMiles </li>";
-           	    echo "<li> <img src='$carImage'></li>";
-           	echo "</ul>";
+            echo "<li> $carModel </li>";
+            echo "<ul>";
+                echo "<li> $$carPrice </li>";
+                echo "<li> $carMiles </li>";
+                echo "<li> <img src='$carImage'></li>";
+            echo "</ul>";
            }
+
+          if(empty($cars_matching_search)) {
+
+            echo "<li> Ain't nothin' here, yo. Try again!</li>";
+          }
+              
         ?>
    </ul>
 </body>
